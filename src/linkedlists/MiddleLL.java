@@ -163,47 +163,45 @@ public class MiddleLL {
 		return newList;
 	}
 	public static ListNode mergeKLists(ArrayList<ListNode> lists) {
-		if (lists.size() == 0)
-			return null;
- 
-		//PriorityQueue is a sorted queue
-		PriorityQueue<ListNode> q = new PriorityQueue<ListNode>(lists.size(),
-				new Comparator<ListNode>() {
-					public int compare(ListNode a, ListNode b) {
-						if (a.value > b.value)
-							return 1;
-						else if(a.value == b.value)
-							return 0;
-						else 
-							return -1;
-					}
-				});
- 
-		//add first node of each list to the queue
-		for (ListNode list : lists) {
-			if (list != null)
-				q.add(list);
-		}
- 
-		ListNode head = new ListNode(0);
-		ListNode p = head; // serve as a pointer/cursor
- 
-		while (q.size() > 0) {
-			ListNode temp = q.poll();
-			//poll() retrieves and removes the head of the queue - q. 
-			p.next = temp;
- 
-			//keep adding next element of each list
-			if (temp.next != null){
-				q.add(temp.next);
-				System.out.println("next in queue"+temp.next.value);
-			}
- 
-			p = p.next;
-		}
- 
-		return head.next;
-	}
+		   if(lists.size() == 0)
+               return null;
+           PriorityQueue<ListNode> queue = new PriorityQueue<ListNode>(lists.size(),new Comparator<ListNode>() {
+        	   public int compare(ListNode o1, ListNode o2) {
+                   return Integer.compare(o1.value, o2.value);
+               }
+           });
+           for(ListNode node: lists) {
+               if(node != null)
+               { 
+            	   queue.add(node);
+            	   System.out.println("1st:"+node.value);
+               }
+           }
+           if(queue.isEmpty())
+               return null;
+
+           ListNode result = queue.poll();
+           if(result.next != null)
+               queue.add(result.next);
+
+           ListNode cur = result;
+
+           while(!queue.isEmpty()) {
+        	   System.out.println("PEEK"+queue.peek().value);
+               ListNode node = queue.poll();
+               if(node.next != null) {
+                   queue.add(node.next);
+                   node.next = null;
+               }
+               cur.next = node;
+               cur = cur.next;
+           }
+
+           return result;
+       }
+
+      
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		MiddleLL list = new MiddleLL();  
@@ -237,22 +235,22 @@ public class MiddleLL {
 		  
 		  MiddleLL sortedlist1 = new MiddleLL();
 		  sortedlist1.addToTheLast(new ListNode(1));  
-		  sortedlist1.addToTheLast(new ListNode(2));  
-		  sortedlist1.addToTheLast(new ListNode(4));  
-		  sortedlist1.addToTheLast(new ListNode(8)); 
+		  sortedlist1.addToTheLast(new ListNode(25));  
+		 // sortedlist1.addToTheLast(new ListNode(40));  
+		 // sortedlist1.addToTheLast(new ListNode(80)); 
 		  
 		  MiddleLL sortedlist2 = new MiddleLL();
-		  sortedlist1.addToTheLast(new ListNode(6));  
-		  sortedlist1.addToTheLast(new ListNode(7));  
-		  sortedlist1.addToTheLast(new ListNode(8));  
-		  sortedlist1.addToTheLast(new ListNode(10));
-		  
-		  
+		  sortedlist2.addToTheLast(new ListNode(6));  
+		  sortedlist2.addToTheLast(new ListNode(7));  
+		  sortedlist2.addToTheLast(new ListNode(8));  
+		  sortedlist2.addToTheLast(new ListNode(10));
+		  //System.out.println("LL2"+sortedlist1.head.next.value);
+		  System.out.println("---------");
 		  ArrayList<ListNode> lists = new ArrayList<ListNode>();
 		  lists.add(sortedlist1.head);
 		  lists.add(sortedlist2.head);
-		  System.out.println(mergeKLists(lists).value);
-		  System.out.println("First of sorted merge"+mergeTwoSortedList(sortedlist1.head,sortedlist2.head).value);
+		  System.out.println(mergeKLists(lists).toString());
+		  System.out.println("First of sorted merge :"+mergeTwoSortedList(sortedlist1.head,sortedlist2.head).next.value);
 		  
 		  
 	}

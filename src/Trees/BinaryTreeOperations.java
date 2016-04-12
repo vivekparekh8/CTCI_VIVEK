@@ -11,6 +11,20 @@ public class BinaryTreeOperations {
 		TreeNode a= sortedArrayToBST(inp,0,inp.length-1);
 		return a;
 	}
+	public static int numTrees(int n) {
+		int[] count = new int[n + 1];
+	 
+		count[0] = 1;
+		count[1] = 1;
+	 
+		for (int i = 2; i <= n; i++) {
+			for (int j = 0; j <= i - 1; j++) {
+				count[i] = count[i] + count[j] * count[i - j - 1];
+			}
+		}
+	 
+		return count[n];
+	}
 	public static TreeNode sortedArrayToBST(int[] num, int start, int end) {
 		if (start > end)
 			return null;
@@ -46,6 +60,8 @@ public class BinaryTreeOperations {
 		printPostOrderTree(root.right);
 		System.out.println(":"+root.data);
 	}
+	static int sum=0;
+	
 	public static TreeNode insertNode(TreeNode root,int data){
 		
 		if(root==null){
@@ -145,6 +161,6 @@ public class BinaryTreeOperations {
 		BFS(t);
 		DFS(t);
 		System.out.println("Height of tree--"+height(t));
-		
+		System.out.println(numTrees(3));
 	}
 }
